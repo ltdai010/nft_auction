@@ -8,3 +8,9 @@ services:
       USERNAME: docker
       PASS: docker
       POSTGRES_DBNAME: auction
+
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
