@@ -1,6 +1,21 @@
 version: "3"
 services:
 
+  server:
+    build:
+      context: .
+      dockerfile: ./build/server/Dockerfile
+    volumes:
+      - .:/app
+    network_mode: "host"
+    environment:
+      DB_HOST: 0.0.0.0
+      DB_PORT: 5432
+      DB_USER: docker
+      DB_PASS: docker
+      DB_NAME: auction
+    command: sleep infinity
+
 
   postgis:
     image: kartoza/postgis:12.0
