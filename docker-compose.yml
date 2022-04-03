@@ -1,0 +1,10 @@
+version: "3"
+services:
+  postgis:
+    image: kartoza/postgis:12.0
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      USERNAME: docker
+      PASS: docker
+      POSTGRES_DBNAME: auction
