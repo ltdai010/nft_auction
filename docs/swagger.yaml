@@ -1,0 +1,437 @@
+basePath: /v1
+definitions:
+  models.Collection:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.Item'
+        type: array
+      metadata:
+        type: object
+      name:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+    type: object
+  models.Item:
+    properties:
+      collection:
+        $ref: '#/definitions/models.Collection'
+      collection_id:
+        type: string
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: string
+      item_id:
+        type: string
+      owner:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+    type: object
+  models.QueryCollectionRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Collection'
+        type: array
+      metadata: {}
+    type: object
+  models.QueryItemRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Collection'
+        type: array
+      metadata: {}
+    type: object
+  models.UserLoginRequest:
+    properties:
+      signature:
+        type: string
+    type: object
+  models.Users:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: string
+      last_login:
+        type: string
+      metadata:
+        type: object
+      name:
+        type: string
+      pubkey:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is Finan Loyalty server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Finan Loyalty API
+  version: "1.0"
+paths:
+  /collections:
+    post:
+      consumes:
+      - application/json
+      description: Post Collection
+      operationId: post-collection
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Collection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Collection'
+      security:
+      - ApiKeyAuth: []
+      summary: Post Collection
+      tags:
+      - Collections
+  /collections/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Collection
+      operationId: delete-collection
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Collection
+      tags:
+      - Collections
+    get:
+      consumes:
+      - application/json
+      description: Get Collection
+      operationId: get-collection
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Collection'
+      summary: Get Collection
+      tags:
+      - Collections
+    put:
+      consumes:
+      - application/json
+      description: Put Collection
+      operationId: put-collection
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Collection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Collection'
+      security:
+      - ApiKeyAuth: []
+      summary: Put Collection
+      tags:
+      - Collections
+  /collections/query/list:
+    get:
+      consumes:
+      - application/json
+      description: Get Collection
+      operationId: query-collection
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: creator_id
+        in: query
+        name: creator_id
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: page_size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QueryCollectionRes'
+      summary: Get Collection
+      tags:
+      - Collections
+  /items:
+    post:
+      consumes:
+      - application/json
+      description: Post Item
+      operationId: post-item
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Item'
+      security:
+      - ApiKeyAuth: []
+      summary: Post Item
+      tags:
+      - Items
+  /items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Item
+      operationId: delete-item
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Item
+      tags:
+      - Items
+    get:
+      consumes:
+      - application/json
+      description: Get Item
+      operationId: get-item
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Item'
+      summary: Get Item
+      tags:
+      - Items
+    put:
+      consumes:
+      - application/json
+      description: Put Item
+      operationId: put-item
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Item'
+      security:
+      - ApiKeyAuth: []
+      summary: Put Item
+      tags:
+      - Items
+  /items/query/list:
+    get:
+      consumes:
+      - application/json
+      description: Get Item
+      operationId: query-items
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: collection_id
+        in: query
+        name: collection_id
+        type: string
+      - description: owner_id
+        in: query
+        name: owner_id
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: page_size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QueryItemRes'
+      summary: Get Item
+      tags:
+      - Items
+  /migrate:
+    get:
+      consumes:
+      - application/json
+      description: migrate
+      operationId: migrate
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: migrate
+      tags:
+      - Migration
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      operationId: login
+      parameters:
+      - description: body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Login user
+      tags:
+      - Users
+  /users/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get profile
+      operationId: get-profile
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Users'
+      summary: Get profile
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

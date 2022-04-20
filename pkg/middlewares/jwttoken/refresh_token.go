@@ -3,6 +3,8 @@ package jwttoken
 import (
 	"crypto/rsa"
 	"encoding/json"
+	"fmt"
+	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
@@ -11,6 +13,7 @@ import (
 type RefreshTokenInfo struct {
 	ID      uuid.UUID `json:"id"`
 	UserID  string    `json:"user_id"`
+	Pubkey  string    `json:"pubkey"`
 	Expired int64     `json:"expired"`
 }
 
@@ -31,8 +34,12 @@ func (t *RefreshTokenInfo) Claims() jwt.MapClaims {
 		clams["userId"] = t.UserID
 	}
 
+	if t.Pubkey != "" {
+		clams["pubkey"] = t.Pubkey
+	}
+
 	if t.Expired != 0 {
-		clams["exp"] = t.Expired
+		clams["exp"] = fmt.Sprint(t.Expired)
 	}
 	return clams
 }
@@ -56,7 +63,11 @@ func RefreshTokenInfoFromClaims(claims jwt.MapClaims) *RefreshTokenInfo {
 		tokenInfo.UserID = cuid
 	}
 
-	if exp, ok := claims["exp"].(int64); ok {
+	if pubkey, ok := claims["pubkey"].(string); ok {
+		tokenInfo.Pubkey = pubkey
+	}
+
+	if exp, err := strconv.ParseInt(fmt.Sprint(claims["exp"]), 10, 64); err == nil {
 		tokenInfo.Expired = exp
 	}
 

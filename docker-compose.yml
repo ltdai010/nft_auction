@@ -1,3 +1,4 @@
+
 version: "3"
 services:
 
@@ -13,6 +14,7 @@ services:
       DB_PASS: docker
       DB_NAME: auction
     command: sleep infinity
+    restart: always
 
 
   postgis:
@@ -24,6 +26,7 @@ services:
       USERNAME: docker
       PASS: docker
       POSTGRES_DBNAME: auction
+    restart: always
 
 volumes:
   db-data:

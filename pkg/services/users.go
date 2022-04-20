@@ -10,22 +10,22 @@ import (
 	"nft_auction/pkg/repos"
 )
 
-type UserService struct {
+type Users struct {
 	repo repos.PGInterface
 }
 
 type UserServiceInterface interface {
 	Login(ctx context.Context, pubkey string) (*models.UsersLogin, error)
-	GetProfile(ctx context.Context, pubkey string) (*models.Users, error)
+	GetProfile(ctx context.Context, id string) (*models.Users, error)
 }
 
 func NewUserService(repo repos.PGInterface) UserServiceInterface {
-	return &UserService{
+	return &Users{
 		repo: repo,
 	}
 }
 
-func (s *UserService) Login(ctx context.Context, pubkey string) (*models.UsersLogin, error) {
+func (s *Users) Login(ctx context.Context, pubkey string) (*models.UsersLogin, error) {
 	pb, err := hex.DecodeString(pubkey)
 	if err != nil {
 		log.Println(err)
@@ -38,7 +38,7 @@ func (s *UserService) Login(ctx context.Context, pubkey string) (*models.UsersLo
 	}
 	address := crypto.PubkeyToAddress(*pk)
 
-	err = s.repo.LoginUser(ctx, &models.Users{
+	user, err := s.repo.LoginUser(ctx, &models.Users{
 		Pubkey:  pubkey,
 		Address: address.String(),
 	})
@@ -47,13 +47,7 @@ func (s *UserService) Login(ctx context.Context, pubkey string) (*models.UsersLo
 		return nil, err
 	}
 
-	user, err := s.repo.GetUserProfile(ctx, pubkey)
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	token, err := middlewares.GenerateLoginToken(pubkey)
+	token, err := middlewares.GenerateLoginToken(user.ID.String(), pubkey)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -64,8 +58,8 @@ func (s *UserService) Login(ctx context.Context, pubkey string) (*models.UsersLo
 	}, nil
 }
 
-func (s *UserService) GetProfile(ctx context.Context, pubkey string) (*models.Users, error) {
-	user, err := s.repo.GetUserProfile(ctx, pubkey)
+func (s *Users) GetProfile(ctx context.Context, id string) (*models.Users, error) {
+	user, err := s.repo.GetUserProfile(ctx, id)
 	if err != nil {
 		return nil, err
 	}

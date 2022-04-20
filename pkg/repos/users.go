@@ -7,22 +7,24 @@ import (
 	"nft_auction/pkg/models"
 )
 
-func (r *RepoPG) LoginUser(ctx context.Context, user *models.Users) (err error) {
+func (r *RepoPG) LoginUser(ctx context.Context, user *models.Users) (*models.Users, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
 
-	tx.Clauses(clause.OnConflict{
+	if err := tx.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "pubkey"}},
 		DoUpdates: clause.Assignments(map[string]interface{}{"last_login": gorm.Expr("CURRENT_TIMESTAMP")}),
-	}).Create(user)
-	return nil
+	}).Create(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
-func (r *RepoPG) GetUserProfile(ctx context.Context, pubkey string) (*models.Users, error) {
+func (r *RepoPG) GetUserProfile(ctx context.Context, id string) (*models.Users, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
 	ret := &models.Users{}
-	if err := tx.Model(&models.Users{}).Where("pubkey = ?", pubkey).First(ret).Error; err != nil {
+	if err := tx.Model(&models.Users{}).Where("id = ?", id).First(ret).Error; err != nil {
 		return nil, err
 	}
 

@@ -62,6 +62,7 @@ func RefreshNewToken(refreshToken string) (*models.NewTokenResponse, error) {
 	}
 	claim := jwt.MapClaims{
 		"userId": rTokenInfo.UserID,
+		"pubkey": rTokenInfo.Pubkey,
 		"exp":    time.Now().UTC().Add(time.Minute * 60).Unix(),
 	}
 	tokenInfo := jwttoken.TokenInfoFromClaims(claim)
@@ -75,12 +76,14 @@ func RefreshNewToken(refreshToken string) (*models.NewTokenResponse, error) {
 	}, nil
 }
 
-func GenerateLoginToken(pubkey string) (*models.LoginTokenResponse, error) {
+func GenerateLoginToken(userId, pubkey string) (*models.LoginTokenResponse, error) {
 	rClaim := jwt.MapClaims{
-		"userId": pubkey,
+		"userId": userId,
+		"pubkey": pubkey,
 	}
 	claim := jwt.MapClaims{
-		"userId": pubkey,
+		"userId": userId,
+		"pubkey": pubkey,
 		"exp":    time.Now().UTC().Add(time.Minute * 60).Unix(),
 	}
 	rTokenInfo := jwttoken.RefreshTokenInfoFromClaims(rClaim)

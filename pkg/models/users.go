@@ -11,7 +11,7 @@ type Users struct {
 	Pubkey    string           `json:"pubkey" gorm:"uniqueIndex"`
 	Address   string           `json:"address"`
 	Name      string           `json:"name"`
-	Metadata  *json.RawMessage `json:"metadata"`
+	Metadata  *json.RawMessage `json:"metadata" swaggertype:"object"`
 }
 
 type UsersLogin struct {

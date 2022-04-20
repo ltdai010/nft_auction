@@ -7,12 +7,17 @@ import (
 )
 
 type BaseModel struct {
-	ID        string          `gorm:"primary_key;type:uuid;default:uuid_generate_v4()" json:"id"`
+	ID        uuid.UUID       `gorm:"primary_key;type:uuid;default:uuid_generate_v4()" json:"id"`
 	CreatorID uuid.UUID       `json:"creator_id"`
 	UpdaterID uuid.UUID       `json:"updater_id"`
 	CreatedAt time.Time       `json:"created_at" sql:"default:CURRENT_TIMESTAMP"`
 	UpdatedAt time.Time       `json:"updated_at" sql:"default:CURRENT_TIMESTAMP"`
-	DeletedAt *gorm.DeletedAt `json:"deleted_at,omitempty" sql:"index"`
+	DeletedAt *gorm.DeletedAt `json:"deleted_at,omitempty" sql:"index" swaggertype:"string"`
+}
+
+type Pagination struct {
+	Page     int `json:"page"`
+	PageSize int `json:"pageSize"`
 }
 
 type ErrorHttp struct {

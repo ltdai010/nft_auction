@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"log"
 	"math"
@@ -29,10 +30,22 @@ type PGInterface interface {
 	Transaction(ctx context.Context, f func(rp PGInterface) error) (err error)
 
 	// Users
-	LoginUser(ctx context.Context, user *models.Users) (err error)
-	GetUserProfile(ctx context.Context, pubkey string) (*models.Users, error)
+	LoginUser(ctx context.Context, user *models.Users) (*models.Users, error)
+	GetUserProfile(ctx context.Context, id string) (*models.Users, error)
 
 	// Collections
+	CreateCollection(ctx context.Context, req *models.Collection) (*models.Collection, error)
+	GetCollection(ctx context.Context, cid *uuid.UUID) (*models.Collection, error)
+	QueryCollections(ctx context.Context, req *models.QueryCollectionReq) (*models.QueryCollectionRes, error)
+	UpdateCollection(ctx context.Context, req *models.Collection) (*models.Collection, error)
+	DeleteCollection(ctx context.Context, cid *uuid.UUID) error
+
+	// Item
+	CreateItem(ctx context.Context, req *models.Item) (*models.Item, error)
+	GetItem(ctx context.Context, id *uuid.UUID) (*models.Item, error)
+	QueryItems(ctx context.Context, req *models.QueryItemReq) (*models.QueryItemRes, error)
+	UpdateItem(ctx context.Context, req *models.Item) (*models.Item, error)
+	DeleteItem(ctx context.Context, cid *uuid.UUID) error
 
 	DB() *gorm.DB
 }

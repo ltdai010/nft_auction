@@ -15,14 +15,24 @@ func NewMigrationHandler(db *gorm.DB) *MigrationHandler {
 	return &MigrationHandler{db: db}
 }
 
+// Migrate
+// @Tags Migration
+// @Security ApiKeyAuth
+// @Summary migrate
+// @Description migrate
+// @ID migrate
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} succes
+// @Router /migrate [get]
 func (h *MigrationHandler) Migrate(ctx *gin.Context) {
 
 	_ = h.db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 
-	err := h.db.AutoMigrate(&models.Users{})
+	err := h.db.AutoMigrate([]interface{}{&models.Users{}, &models.Collection{}, &models.Item{}}...)
 	if err != nil {
 		_ = ctx.Error(err)
 		return
 	}
-	ctx.JSON(http.StatusOK, nil)
+	ctx.JSON(http.StatusNoContent, nil)
 }
