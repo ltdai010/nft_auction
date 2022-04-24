@@ -262,6 +262,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/items/action/like/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Like Item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Like Item",
+                "operationId": "put-item",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/items/query/list": {
             "get": {
                 "description": "Get Item",
@@ -287,6 +327,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "collection_id",
                         "name": "collection_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "liked by",
+                        "name": "liked_by",
                         "in": "query"
                     },
                     {
@@ -464,7 +510,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "User"
                 ],
                 "summary": "Login user",
                 "operationId": "login",
@@ -499,7 +545,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "User"
                 ],
                 "summary": "Get profile",
                 "operationId": "get-profile",
@@ -516,7 +562,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Users"
+                            "$ref": "#/definitions/models.User"
                         }
                     }
                 }
@@ -565,6 +611,9 @@ const docTemplate = `{
         "models.Item": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "collection": {
                     "$ref": "#/definitions/models.Collection"
                 },
@@ -580,10 +629,19 @@ const docTemplate = `{
                 "deleted_at": {
                     "type": "string"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "item_id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "name": {
                     "type": "string"
                 },
                 "owner": {
@@ -621,15 +679,7 @@ const docTemplate = `{
                 "metadata": {}
             }
         },
-        "models.UserLoginRequest": {
-            "type": "object",
-            "properties": {
-                "signature": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Users": {
+        "models.User": {
             "type": "object",
             "properties": {
                 "address": {
@@ -666,6 +716,14 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "models.UserLoginRequest": {
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -680,7 +738,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "api.uchain.duckdns.org",
+	Host:             "localhost:8080",
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Finan Loyalty API",

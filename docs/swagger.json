@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "api.uchain.duckdns.org",
+    "host": "localhost:8080",
     "basePath": "/v1",
     "paths": {
         "/collections": {
@@ -255,6 +255,46 @@
                 }
             }
         },
+        "/items/action/like/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Like Item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Like Item",
+                "operationId": "put-item",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/items/query/list": {
             "get": {
                 "description": "Get Item",
@@ -280,6 +320,12 @@
                         "type": "string",
                         "description": "collection_id",
                         "name": "collection_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "liked by",
+                        "name": "liked_by",
                         "in": "query"
                     },
                     {
@@ -457,7 +503,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "User"
                 ],
                 "summary": "Login user",
                 "operationId": "login",
@@ -492,7 +538,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "User"
                 ],
                 "summary": "Get profile",
                 "operationId": "get-profile",
@@ -509,7 +555,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Users"
+                            "$ref": "#/definitions/models.User"
                         }
                     }
                 }
@@ -558,6 +604,9 @@
         "models.Item": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "collection": {
                     "$ref": "#/definitions/models.Collection"
                 },
@@ -573,10 +622,19 @@
                 "deleted_at": {
                     "type": "string"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "item_id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "name": {
                     "type": "string"
                 },
                 "owner": {
@@ -614,15 +672,7 @@
                 "metadata": {}
             }
         },
-        "models.UserLoginRequest": {
-            "type": "object",
-            "properties": {
-                "signature": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Users": {
+        "models.User": {
             "type": "object",
             "properties": {
                 "address": {
@@ -656,6 +706,14 @@
                     "type": "string"
                 },
                 "updater_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserLoginRequest": {
+            "type": "object",
+            "properties": {
+                "signature": {
                     "type": "string"
                 }
             }

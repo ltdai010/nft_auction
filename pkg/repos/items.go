@@ -3,6 +3,8 @@ package repos
 import (
 	"context"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"log"
 	"nft_auction/pkg/models"
 )
@@ -27,10 +29,22 @@ func (r *RepoPG) GetItem(ctx context.Context, id *uuid.UUID) (*models.Item, erro
 	return &res, nil
 }
 
+func (r *RepoPG) Like(ctx context.Context, req *models.ItemLike) error {
+	tx, cancel := r.DBWithTimeout(ctx)
+	defer cancel()
+
+	if err := tx.Clauses(clause.OnConflict{
+		DoUpdates: clause.Assignments(map[string]interface{}{"deleted_at": gorm.Expr("(CASE deleted_at IS NULL THEN CURRENT_TIMESTAMP ELSE NULL END;)")})}).Create(req).Error; err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
 func (r *RepoPG) QueryItems(ctx context.Context, req *models.QueryItemReq) (*models.QueryItemRes, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
-	tx = tx.Model(&models.Item{})
+	tx = tx.Table("item as i")
 	page := r.GetPage(req.Page)
 	pageSize := r.GetPageSize(req.PageSize)
 	items := []models.Item{}
@@ -44,6 +58,12 @@ func (r *RepoPG) QueryItems(ctx context.Context, req *models.QueryItemReq) (*mod
 	}
 	if req.Name != "" {
 		tx = tx.Where("name = ?", "%"+req.Name+"%")
+	}
+	if req.CreatorID != "" {
+		tx = tx.Where("creator_id = ?", req.CreatorID)
+	}
+	if req.LikedBy != "" {
+		tx = tx.Where("(SELECT count(*) as count FROM item_like il WHERE i.id = il.item_id AND il.user_id = ?) > 0", req.LikedBy)
 	}
 	if err := tx.Count(&total).Limit(pageSize).Offset(r.GetOffset(page, pageSize)).Find(&items).Error; err != nil {
 		log.Println(err)

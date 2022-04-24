@@ -7,7 +7,7 @@ import (
 	"nft_auction/pkg/models"
 )
 
-func (r *RepoPG) LoginUser(ctx context.Context, user *models.Users) (*models.Users, error) {
+func (r *RepoPG) LoginUser(ctx context.Context, user *models.User) (*models.User, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
 
@@ -20,11 +20,11 @@ func (r *RepoPG) LoginUser(ctx context.Context, user *models.Users) (*models.Use
 	return user, nil
 }
 
-func (r *RepoPG) GetUserProfile(ctx context.Context, id string) (*models.Users, error) {
+func (r *RepoPG) GetUserProfile(ctx context.Context, id string) (*models.User, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
-	ret := &models.Users{}
-	if err := tx.Model(&models.Users{}).Where("id = ?", id).First(ret).Error; err != nil {
+	ret := &models.User{}
+	if err := tx.Model(&models.User{}).Where("id = ?", id).First(ret).Error; err != nil {
 		return nil, err
 	}
 

@@ -29,9 +29,9 @@ type PGInterface interface {
 	// Database
 	Transaction(ctx context.Context, f func(rp PGInterface) error) (err error)
 
-	// Users
-	LoginUser(ctx context.Context, user *models.Users) (*models.Users, error)
-	GetUserProfile(ctx context.Context, id string) (*models.Users, error)
+	// User
+	LoginUser(ctx context.Context, user *models.User) (*models.User, error)
+	GetUserProfile(ctx context.Context, id string) (*models.User, error)
 
 	// Collections
 	CreateCollection(ctx context.Context, req *models.Collection) (*models.Collection, error)
@@ -43,6 +43,7 @@ type PGInterface interface {
 	// Item
 	CreateItem(ctx context.Context, req *models.Item) (*models.Item, error)
 	GetItem(ctx context.Context, id *uuid.UUID) (*models.Item, error)
+	Like(ctx context.Context, req *models.ItemLike) error
 	QueryItems(ctx context.Context, req *models.QueryItemReq) (*models.QueryItemRes, error)
 	UpdateItem(ctx context.Context, req *models.Item) (*models.Item, error)
 	DeleteItem(ctx context.Context, cid *uuid.UUID) error

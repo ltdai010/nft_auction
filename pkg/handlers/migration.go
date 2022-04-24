@@ -29,7 +29,7 @@ func (h *MigrationHandler) Migrate(ctx *gin.Context) {
 
 	_ = h.db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 
-	err := h.db.AutoMigrate([]interface{}{&models.Users{}, &models.Collection{}, &models.Item{}}...)
+	err := h.db.AutoMigrate([]interface{}{&models.User{}, &models.Collection{}, &models.Item{}, &models.ItemLike{}}...)
 	if err != nil {
 		_ = ctx.Error(err)
 		return

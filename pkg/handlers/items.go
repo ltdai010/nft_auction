@@ -47,6 +47,7 @@ func (c *ItemHandler) Get(ctx *gin.Context) {
 // @Produce  json
 // @Param name query string false "name"
 // @Param collection_id query string false "collection_id"
+// @Param liked_by query string false "liked by"
 // @Param owner_id query string false "owner_id"
 // @Param page query int false "page"
 // @Param page_size query int false "page_size"
@@ -91,6 +92,28 @@ func (c *ItemHandler) Post(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, user)
+}
+
+// Like
+// @Tags Items
+// @Summary Like Item
+// @Description Like Item
+// @Security ApiKeyAuth
+// @ID put-item
+// @Accept  json
+// @Produce  json
+// @Param data body models.Item true "data"
+// @Success 200 {string} success
+// @Router /items/action/like/{id} [put]
+func (c *ItemHandler) Like(ctx *gin.Context) {
+	itemId := uuid.MustParse(ctx.Param("id"))
+	userId := uuid.MustParse(ctx.GetHeader("x-user-id"))
+	err := c.service.Like(ctx, &itemId, &userId)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, consts.ErrNotFound)
+		return
+	}
+	ctx.JSON(http.StatusOK, nil)
 }
 
 // Put

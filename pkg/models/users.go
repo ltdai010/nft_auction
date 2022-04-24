@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Users struct {
+type User struct {
 	BaseModel
 	LastLogin time.Time        `json:"last_login" gorm:"autoCreateTime" sql:"default:CURRENT_TIMESTAMP"`
 	Pubkey    string           `json:"pubkey" gorm:"uniqueIndex"`
@@ -15,7 +15,7 @@ type Users struct {
 }
 
 type UsersLogin struct {
-	Data  Users              `json:"data"`
+	Data  User               `json:"data"`
 	Token LoginTokenResponse `json:"token"`
 }
 
@@ -23,6 +23,6 @@ type UserLoginRequest struct {
 	Signature string `json:"signature"`
 }
 
-func (user *Users) TableName() string {
+func (user *User) TableName() string {
 	return "users"
 }

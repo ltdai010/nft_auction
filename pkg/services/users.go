@@ -16,7 +16,7 @@ type Users struct {
 
 type UserServiceInterface interface {
 	Login(ctx context.Context, pubkey string) (*models.UsersLogin, error)
-	GetProfile(ctx context.Context, id string) (*models.Users, error)
+	GetProfile(ctx context.Context, id string) (*models.User, error)
 }
 
 func NewUserService(repo repos.PGInterface) UserServiceInterface {
@@ -38,7 +38,7 @@ func (s *Users) Login(ctx context.Context, pubkey string) (*models.UsersLogin, e
 	}
 	address := crypto.PubkeyToAddress(*pk)
 
-	user, err := s.repo.LoginUser(ctx, &models.Users{
+	user, err := s.repo.LoginUser(ctx, &models.User{
 		Pubkey:  pubkey,
 		Address: address.String(),
 	})
@@ -58,7 +58,7 @@ func (s *Users) Login(ctx context.Context, pubkey string) (*models.UsersLogin, e
 	}, nil
 }
 
-func (s *Users) GetProfile(ctx context.Context, id string) (*models.Users, error) {
+func (s *Users) GetProfile(ctx context.Context, id string) (*models.User, error) {
 	user, err := s.repo.GetUserProfile(ctx, id)
 	if err != nil {
 		return nil, err

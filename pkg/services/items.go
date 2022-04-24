@@ -16,9 +16,10 @@ func NewItemsService(repo repos.PGInterface) ItemsInterface {
 }
 
 type ItemsInterface interface {
-	Create(ctx context.Context, Item *models.Item) (*models.Item, error)
+	Create(ctx context.Context, item *models.Item) (*models.Item, error)
 	Get(ctx context.Context, cid *uuid.UUID) (*models.Item, error)
-	Update(ctx context.Context, Item *models.Item) (*models.Item, error)
+	Update(ctx context.Context, item *models.Item) (*models.Item, error)
+	Like(ctx context.Context, itemId *uuid.UUID, uid *uuid.UUID) error
 	Delete(ctx context.Context, cid *uuid.UUID) error
 	Query(ctx context.Context, req *models.QueryItemReq) (*models.QueryItemRes, error)
 }
@@ -41,4 +42,14 @@ func (c *Items) Delete(ctx context.Context, cid *uuid.UUID) error {
 
 func (c *Items) Query(ctx context.Context, req *models.QueryItemReq) (*models.QueryItemRes, error) {
 	return c.repo.QueryItems(ctx, req)
+}
+
+func (c *Items) Like(ctx context.Context, itemId *uuid.UUID, uid *uuid.UUID) error {
+	return c.repo.Like(ctx, &models.ItemLike{
+		BaseModel: models.BaseModel{
+			CreatorID: *uid,
+		},
+		ItemID: *itemId,
+		UserID: *uid,
+	})
 }

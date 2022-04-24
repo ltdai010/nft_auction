@@ -19,7 +19,7 @@ type UserHandler struct {
 }
 
 // Login
-// @Tags Users
+// @Tags User
 // @Summary Login user
 // @Description Login user
 // @ID login
@@ -51,14 +51,14 @@ func (c *UserHandler) Login(ctx *gin.Context) {
 }
 
 // GetProfile
-// @Tags Users
+// @Tags User
 // @Summary Get profile
 // @Description Get profile
 // @ID get-profile
 // @Accept  json
 // @Produce  json
 // @Param id path string true "id"
-// @Success 200 {object} models.Users
+// @Success 200 {object} models.User
 // @Router /users/profile/{id} [get]
 func (c *UserHandler) GetProfile(ctx *gin.Context) {
 	id := ctx.Param("id")
