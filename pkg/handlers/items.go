@@ -79,14 +79,13 @@ func (c *ItemHandler) Query(ctx *gin.Context) {
 // @Success 200 {object} models.Item
 // @Router /items [post]
 func (c *ItemHandler) Post(ctx *gin.Context) {
-	var req models.Item
+	var req models.ItemReq
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	userId := ctx.GetHeader("x-user-id")
-	req.CreatorID = uuid.MustParse(userId)
-	user, err := c.service.Create(ctx, &req)
+	userId := uuid.MustParse(ctx.GetHeader("x-user-id"))
+	user, err := c.service.Create(ctx, &req, &userId)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, consts.ErrNotFound)
 		return
@@ -128,15 +127,14 @@ func (c *ItemHandler) Like(ctx *gin.Context) {
 // @Success 200 {object} models.Item
 // @Router /items/{id} [put]
 func (c *ItemHandler) Put(ctx *gin.Context) {
-	var req models.Item
+	var req models.ItemReq
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	req.ID = uuid.MustParse(ctx.Param("id"))
-	userId := ctx.GetHeader("x-user-id")
-	req.UpdaterID = uuid.MustParse(userId)
-	user, err := c.service.Update(ctx, &req)
+	id := uuid.MustParse(ctx.Param("id"))
+	userId := uuid.MustParse(ctx.GetHeader("x-user-id"))
+	user, err := c.service.Update(ctx, &userId, &req, &id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, consts.ErrNotFound)
 		return

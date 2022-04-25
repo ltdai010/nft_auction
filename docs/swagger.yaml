@@ -72,6 +72,55 @@ definitions:
         type: array
       metadata: {}
     type: object
+  models.QuerySaleRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Sale'
+        type: array
+    type: object
+  models.Sale:
+    properties:
+      buyer_id:
+        type: string
+      coin_buy:
+        type: string
+      coin_buy_address:
+        type: string
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      decimal:
+        type: integer
+      deleted_at:
+        type: string
+      id:
+        type: string
+      item:
+        $ref: '#/definitions/models.Item'
+      item_id:
+        type: string
+      price:
+        type: integer
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+    type: object
+  models.SaleReq:
+    properties:
+      coin_buy:
+        type: string
+      coin_buy_address:
+        type: string
+      decimal:
+        type: integer
+      item_id:
+        type: string
+      price:
+        type: integer
+    type: object
   models.User:
     properties:
       address:
@@ -421,6 +470,74 @@ paths:
       summary: migrate
       tags:
       - Migration
+  /sales:
+    post:
+      consumes:
+      - application/json
+      description: Post Sales
+      operationId: post-sales
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.SaleReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Sale'
+      security:
+      - ApiKeyAuth: []
+      summary: Post Sales
+      tags:
+      - Sales
+  /sales/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Sale
+      operationId: get-sale
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Sale'
+      summary: Get Sale
+      tags:
+      - Sales
+  /sales/query/list:
+    get:
+      consumes:
+      - application/json
+      description: Query Sale
+      operationId: query-sale
+      parameters:
+      - description: creator_id
+        in: query
+        name: item_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuerySaleRes'
+      summary: Query Sale
+      tags:
+      - Sales
   /users/login:
     post:
       consumes:

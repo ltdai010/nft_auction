@@ -69,17 +69,14 @@ func (r *RepoPG) QueryItems(ctx context.Context, req *models.QueryItemReq) (*mod
 		log.Println(err)
 		return nil, err
 	}
-	var err error
-	if rs.Metadata, err = r.GetPaginationInfo("", nil, total, page, pageSize); err != nil {
-		return nil, err
-	}
+	rs.Metadata = r.GetPaginationInfo(total, page, pageSize)
 	return &rs, nil
 }
 
 func (r *RepoPG) UpdateItem(ctx context.Context, req *models.Item) (*models.Item, error) {
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
-	if err := tx.Save(req).Error; err != nil {
+	if err := tx.Updates(req).Error; err != nil {
 		log.Println(err)
 		return nil, err
 	}

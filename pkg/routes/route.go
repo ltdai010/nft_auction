@@ -39,6 +39,7 @@ func NewRoute() *gin.Engine {
 	users := v1.Group("/users/")
 	collections := v1.Group("/collections/")
 	items := v1.Group("/items/")
+	sales := v1.Group("/sales/")
 	dns := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v", conf.LoadEnv().DBHost, conf.LoadEnv().DBUser, conf.LoadEnv().DBPass, conf.LoadEnv().DBName, conf.LoadEnv().DBPort)
 	db, err := gorm.Open(postgres.Open(dns))
 	if err != nil {
@@ -53,6 +54,7 @@ func NewRoute() *gin.Engine {
 	InitUserRoutes(users, repo)
 	InitCollectionsRoutes(collections, repo)
 	InitItemsRoutes(items, repo)
+	InitSalesRoutes(sales, repo)
 
 	// migration
 	InitMigrationRoutes(v1, repo)

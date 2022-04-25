@@ -21,6 +21,16 @@ func (i *Item) TableName() string {
 	return "items"
 }
 
+type ItemReq struct {
+	ItemID       string          `json:"item_id" gorm:"index"`
+	Owner        string          `json:"owner"`
+	CollectionID uuid.UUID       `json:"collection_id"`
+	Metadata     json.RawMessage `json:"metadata" swaggertype:"object"`
+	Category     string          `json:"category"`
+	Name         string          `json:"name"`
+	Description  string          `json:"description"`
+}
+
 type ItemLike struct {
 	BaseModel
 	ItemID uuid.UUID `json:"item_id" gorm:"uniqueIndex:idx_item_user"`

@@ -48,6 +48,19 @@ type PGInterface interface {
 	UpdateItem(ctx context.Context, req *models.Item) (*models.Item, error)
 	DeleteItem(ctx context.Context, cid *uuid.UUID) error
 
+	// Order
+	CreateOrder(ctx context.Context, req *models.Order) (*models.Order, error)
+	GetOrder(ctx context.Context, id *uuid.UUID) (*models.Order, error)
+	QueryOrders(ctx context.Context, req *models.QueryOrderReq) (*models.QueryOrderRes, error)
+	UpdateOrder(ctx context.Context, req *models.Order) (*models.Order, error)
+	DeleteOrder(ctx context.Context, cid *uuid.UUID) error
+
+	CreateSale(ctx context.Context, req *models.Sale) (*models.Sale, error)
+	GetSale(ctx context.Context, id *uuid.UUID) (*models.Sale, error)
+	QuerySales(ctx context.Context, req *models.QuerySaleReq) (*models.QuerySaleRes, error)
+	UpdateSale(ctx context.Context, req *models.Sale) (*models.Sale, error)
+	DeleteSale(ctx context.Context, cid *uuid.UUID) error
+
 	DB() *gorm.DB
 }
 
@@ -118,28 +131,11 @@ func (r *RepoPG) GetTotalPages(totalRows int64, pageSize int) int {
 	return int(math.Ceil(float64(totalRows) / float64(pageSize)))
 }
 
-func (r *RepoPG) GetOrder(sort string) string {
-	if sort == "" {
-		sort = "created_at desc"
-	}
-	return sort
-}
-
-func (r *RepoPG) GetPaginationInfo(query string, tx *gorm.DB, totalRow int64, page, pageSize int) (rs map[string]interface{}, err error) {
-	tm := struct {
-		Count int64 `json:"count"`
-	}{}
-	if query != "" {
-		if err = tx.Raw(query).Scan(&tm).Error; err != nil {
-			return nil, err
-		}
-		totalRow = tm.Count
-	}
-
+func (r *RepoPG) GetPaginationInfo(totalRow int64, page, pageSize int) map[string]interface{} {
 	return map[string]interface{}{
 		"page":        page,
 		"page_size":   pageSize,
 		"total_pages": r.GetTotalPages(totalRow, pageSize),
 		"total_rows":  totalRow,
-	}, nil
+	}
 }

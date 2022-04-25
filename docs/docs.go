@@ -500,6 +500,111 @@ const docTemplate = `{
                 }
             }
         },
+        "/sales": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Post Sales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Post Sales",
+                "operationId": "post-sales",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SaleReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Sale"
+                        }
+                    }
+                }
+            }
+        },
+        "/sales/query/list": {
+            "get": {
+                "description": "Query Sale",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Query Sale",
+                "operationId": "query-sale",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "creator_id",
+                        "name": "item_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuerySaleRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/sales/{id}": {
+            "get": {
+                "description": "Get Sale",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Get Sale",
+                "operationId": "get-sale",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Sale"
+                        }
+                    }
+                }
+            }
+        },
         "/users/login": {
             "post": {
                 "description": "Login user",
@@ -677,6 +782,81 @@ const docTemplate = `{
                     }
                 },
                 "metadata": {}
+            }
+        },
+        "models.QuerySaleRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Sale"
+                    }
+                }
+            }
+        },
+        "models.Sale": {
+            "type": "object",
+            "properties": {
+                "buyer_id": {
+                    "type": "string"
+                },
+                "coin_buy": {
+                    "type": "string"
+                },
+                "coin_buy_address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "string"
+                },
+                "decimal": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "item": {
+                    "$ref": "#/definitions/models.Item"
+                },
+                "item_id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updater_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SaleReq": {
+            "type": "object",
+            "properties": {
+                "coin_buy": {
+                    "type": "string"
+                },
+                "coin_buy_address": {
+                    "type": "string"
+                },
+                "decimal": {
+                    "type": "integer"
+                },
+                "item_id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                }
             }
         },
         "models.User": {

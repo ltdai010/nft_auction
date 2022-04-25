@@ -66,10 +66,7 @@ func (r *RepoPG) QueryCollections(ctx context.Context, req *models.QueryCollecti
 		log.Println(err)
 		return nil, err
 	}
-	var err error
-	if rs.Metadata, err = r.GetPaginationInfo("", nil, total, page, pageSize); err != nil {
-		return nil, err
-	}
+	rs.Metadata = r.GetPaginationInfo(total, page, pageSize)
 	rs.Data = collections
 	return &rs, nil
 }
