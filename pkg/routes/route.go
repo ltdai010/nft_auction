@@ -2,7 +2,6 @@ package routes
 
 import (
 	"fmt"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	swagger "github.com/swaggo/gin-swagger"
@@ -14,12 +13,27 @@ import (
 	"nft_auction/pkg/repos"
 )
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func NewRoute() *gin.Engine {
 	route := gin.Default()
-	route.Use(cors.Default())
+	route.Use(CORSMiddleware())
 	v1 := route.Group("/v1")
 	v1.Use(middlewares.AuthMiddleware())
-	v1.Use(cors.Default())
 	users := v1.Group("/users/")
 	collections := v1.Group("/collections/")
 	items := v1.Group("/items/")
