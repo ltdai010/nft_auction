@@ -17,7 +17,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if tokenStr == "" && context.Request.Method == http.MethodGet {
 			return
 		}
-		if strings.Contains(context.Request.URL.String(), "login") {
+		if strings.Contains(context.Request.URL.String(), "login") || strings.Contains(context.Request.URL.String(), "refresh-token") {
 			return
 		}
 		token := jwttoken.JwtTokenFrom(tokenStr)
