@@ -13,7 +13,7 @@ services:
       DB_USER: docker
       DB_PASS: docker
       DB_NAME: auction
-    command: sleep infinity
+    command: go run .
     restart: always
 
 
