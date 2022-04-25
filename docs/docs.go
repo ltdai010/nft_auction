@@ -51,7 +51,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Collection"
+                            "$ref": "#/definitions/models.CollectionReq"
                         }
                     }
                 ],
@@ -172,7 +172,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Collection"
+                            "$ref": "#/definitions/models.CollectionReq"
                         }
                     }
                 ],
@@ -248,7 +248,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/models.ItemReq"
                         }
                     }
                 ],
@@ -421,7 +421,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/models.ItemReq"
                         }
                     }
                 ],
@@ -713,6 +713,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CollectionReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Item": {
             "type": "object",
             "properties": {
@@ -756,6 +770,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updater_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ItemReq": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "collection_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "item_id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
                     "type": "string"
                 }
             }

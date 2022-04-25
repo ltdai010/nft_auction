@@ -25,6 +25,15 @@ definitions:
       updater_id:
         type: string
     type: object
+  models.CollectionReq:
+    properties:
+      address:
+        type: string
+      metadata:
+        type: object
+      name:
+        type: string
+    type: object
   models.Item:
     properties:
       category:
@@ -54,6 +63,23 @@ definitions:
       updated_at:
         type: string
       updater_id:
+        type: string
+    type: object
+  models.ItemReq:
+    properties:
+      category:
+        type: string
+      collection_id:
+        type: string
+      description:
+        type: string
+      item_id:
+        type: string
+      metadata:
+        type: object
+      name:
+        type: string
+      owner:
         type: string
     type: object
   models.QueryCollectionRes:
@@ -177,7 +203,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.Collection'
+          $ref: '#/definitions/models.CollectionReq'
       produces:
       - application/json
       responses:
@@ -246,7 +272,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.Collection'
+          $ref: '#/definitions/models.CollectionReq'
       produces:
       - application/json
       responses:
@@ -304,7 +330,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.Item'
+          $ref: '#/definitions/models.ItemReq'
       produces:
       - application/json
       responses:
@@ -373,7 +399,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.Item'
+          $ref: '#/definitions/models.ItemReq'
       produces:
       - application/json
       responses:

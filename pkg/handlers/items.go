@@ -75,7 +75,7 @@ func (c *ItemHandler) Query(ctx *gin.Context) {
 // @ID post-item
 // @Accept  json
 // @Produce  json
-// @Param data body models.Item true "data"
+// @Param data body models.ItemReq true "data"
 // @Success 200 {object} models.Item
 // @Router /items [post]
 func (c *ItemHandler) Post(ctx *gin.Context) {
@@ -123,7 +123,7 @@ func (c *ItemHandler) Like(ctx *gin.Context) {
 // @ID put-item
 // @Accept  json
 // @Produce  json
-// @Param data body models.Item true "data"
+// @Param data body models.ItemReq true "data"
 // @Success 200 {object} models.Item
 // @Router /items/{id} [put]
 func (c *ItemHandler) Put(ctx *gin.Context) {

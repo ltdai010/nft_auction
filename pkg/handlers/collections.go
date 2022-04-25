@@ -73,7 +73,7 @@ func (c *CollectionHandler) Query(ctx *gin.Context) {
 // @ID post-collection
 // @Accept  json
 // @Produce  json
-// @Param data body models.Collection true "data"
+// @Param data body models.CollectionReq true "data"
 // @Success 200 {object} models.Collection
 // @Router /collections [post]
 func (c *CollectionHandler) Post(ctx *gin.Context) {
@@ -99,7 +99,7 @@ func (c *CollectionHandler) Post(ctx *gin.Context) {
 // @ID put-collection
 // @Accept  json
 // @Produce  json
-// @Param data body models.Collection true "data"
+// @Param data body models.CollectionReq true "data"
 // @Success 200 {object} models.Collection
 // @Router /collections/{id} [put]
 func (c *CollectionHandler) Put(ctx *gin.Context) {
