@@ -15,8 +15,8 @@ func (user *Collection) TableName() string {
 }
 
 type QueryCollectionReq struct {
-	Name      string `json:"name"`
-	CreatorID string `json:"creator_id"`
+	Name      string `json:"name" form:"name"`
+	CreatorID string `json:"creator_id" form:"creator"`
 	Pagination
 }
 

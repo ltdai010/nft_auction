@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	swagger "github.com/swaggo/gin-swagger"
@@ -30,6 +31,7 @@ func CORSMiddleware() gin.HandlerFunc {
 }
 
 func NewRoute() *gin.Engine {
+	cors.Default()
 	route := gin.Default()
 	route.Use(CORSMiddleware())
 	v1 := route.Group("/v1")
