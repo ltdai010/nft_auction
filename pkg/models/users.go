@@ -23,6 +23,10 @@ type UserLoginRequest struct {
 	Signature string `json:"signature"`
 }
 
+type UserRefreshTokenRequest struct {
+	RefreshToken string `json:"refresh_token"`
+}
+
 func (user *User) TableName() string {
 	return "users"
 }

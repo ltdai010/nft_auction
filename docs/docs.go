@@ -672,6 +672,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/refresh-token": {
+            "post": {
+                "description": "RefreshToken user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "RefreshToken user",
+                "operationId": "refresh-token",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserRefreshTokenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginTokenResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -796,6 +831,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "owner": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginTokenResponse": {
+            "type": "object",
+            "properties": {
+                "expired_at": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "token": {
                     "type": "string"
                 }
             }
@@ -941,6 +990,14 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserRefreshTokenRequest": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
                     "type": "string"
                 }
             }

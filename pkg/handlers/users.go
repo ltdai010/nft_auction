@@ -50,6 +50,32 @@ func (c *UserHandler) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
+// RefreshToken
+// @Tags User
+// @Summary RefreshToken user
+// @Description RefreshToken user
+// @ID refresh-token
+// @Accept  json
+// @Produce  json
+// @Param data body models.UserRefreshTokenRequest true "body"
+// @Success 200 {object} models.LoginTokenResponse
+// @Router /users/refresh-token [post]
+func (c *UserHandler) RefreshToken(ctx *gin.Context) {
+	req := &models.UserRefreshTokenRequest{}
+	if err := ctx.BindJSON(req); err != nil {
+		log.Println(err)
+		ctx.JSON(http.StatusBadRequest, consts.ErrBadRequest)
+		return
+	}
+	token, err := c.userService.RefreshToken(ctx, req.RefreshToken)
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(http.StatusInternalServerError, consts.ErrInternalServer)
+		return
+	}
+	ctx.JSON(http.StatusOK, token)
+}
+
 // GetProfile
 // @Tags User
 // @Summary Get profile

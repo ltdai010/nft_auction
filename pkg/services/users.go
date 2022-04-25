@@ -16,6 +16,7 @@ type Users struct {
 
 type UserServiceInterface interface {
 	Login(ctx context.Context, pubkey string) (*models.UsersLogin, error)
+	RefreshToken(ctx context.Context, refreshToken string) (*models.LoginTokenResponse, error)
 	GetProfile(ctx context.Context, id string) (*models.User, error)
 }
 
@@ -23,6 +24,18 @@ func NewUserService(repo repos.PGInterface) UserServiceInterface {
 	return &Users{
 		repo: repo,
 	}
+}
+
+func (s *Users) RefreshToken(ctx context.Context, refreshToken string) (*models.LoginTokenResponse, error) {
+	token, err := middlewares.RefreshNewToken(refreshToken)
+	if err != nil {
+		return nil, err
+	}
+	return &models.LoginTokenResponse{
+		Token:        token.Token,
+		ExpiredAt:    token.ExpiredAt,
+		RefreshToken: refreshToken,
+	}, nil
 }
 
 func (s *Users) Login(ctx context.Context, pubkey string) (*models.UsersLogin, error) {

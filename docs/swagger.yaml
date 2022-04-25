@@ -82,6 +82,15 @@ definitions:
       owner:
         type: string
     type: object
+  models.LoginTokenResponse:
+    properties:
+      expired_at:
+        type: integer
+      refresh_token:
+        type: string
+      token:
+        type: string
+    type: object
   models.QueryCollectionRes:
     properties:
       data:
@@ -175,6 +184,11 @@ definitions:
   models.UserLoginRequest:
     properties:
       signature:
+        type: string
+    type: object
+  models.UserRefreshTokenRequest:
+    properties:
+      refresh_token:
         type: string
     type: object
 host: api.uchain.duckdns.org
@@ -607,6 +621,29 @@ paths:
           schema:
             $ref: '#/definitions/models.User'
       summary: Get profile
+      tags:
+      - User
+  /users/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: RefreshToken user
+      operationId: refresh-token
+      parameters:
+      - description: body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginTokenResponse'
+      summary: RefreshToken user
       tags:
       - User
 securityDefinitions:
