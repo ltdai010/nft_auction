@@ -10,7 +10,7 @@ import (
 func InitItemsRoutes(rg *gin.RouterGroup, repo repos.PGInterface) {
 	service := services.NewItemsService(repo)
 	handler := handlers.NewItemHandler(service)
-	rg.POST("/", handler.Post)
+	rg.POST("", handler.Post)
 	rg.PUT("/items/action/like/:id", handler.Like)
 	rg.GET("/:id", handler.Get)
 	rg.GET("/query/list", handler.Query)
