@@ -19,6 +19,7 @@ func NewRoute() *gin.Engine {
 	route.Use(cors.Default())
 	v1 := route.Group("/v1")
 	v1.Use(middlewares.AuthMiddleware())
+	v1.Use(cors.Default())
 	users := v1.Group("/users/")
 	collections := v1.Group("/collections/")
 	items := v1.Group("/items/")
