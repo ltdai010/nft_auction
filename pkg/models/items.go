@@ -44,11 +44,11 @@ func (il *ItemLike) TableName() string {
 }
 
 type QueryItemReq struct {
-	Name         string `json:"name"`
-	CollectionID string `json:"collection_id"`
-	OwnerID      string `json:"owner_id"`
-	LikedBy      string `json:"liked_by"`
-	CreatorID    string `json:"creator_id"`
+	Name         string `json:"name" form:"name"`
+	CollectionID string `json:"collection_id" form:"collection_id"`
+	OwnerID      string `json:"owner_id" form:"owner_id"`
+	LikedBy      string `json:"liked_by" form:"liked_by"`
+	CreatorID    string `json:"creator_id" form:"creator_id"`
 	Pagination
 }
 
