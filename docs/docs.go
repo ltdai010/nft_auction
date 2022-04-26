@@ -777,6 +777,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "creator": {
+                    "$ref": "#/definitions/models.User"
+                },
                 "creator_id": {
                     "type": "string"
                 },
@@ -799,6 +802,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "owner": {
+                    "$ref": "#/definitions/models.User"
+                },
+                "owner_id": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -830,7 +836,7 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "owner": {
+                "owner_id": {
                     "type": "string"
                 }
             }
