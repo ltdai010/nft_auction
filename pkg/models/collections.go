@@ -22,7 +22,7 @@ type CollectionReq struct {
 
 type QueryCollectionReq struct {
 	Name      string `json:"name" form:"name"`
-	CreatorID string `json:"creator_id" form:"creator"`
+	CreatorID string `json:"creator_id" form:"creator_id"`
 	Pagination
 }
 
