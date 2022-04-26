@@ -11,7 +11,7 @@ type Item struct {
 	OwnerID      uuid.UUID       `json:"owner_id"`
 	Owner        User            `json:"owner"`
 	CreatorID    uuid.UUID       `json:"creator_id"`
-	Creator      User            `json:"creator" gorm:"foreignKey:creator_id;references:id"`
+	Creator      User            `json:"creator"`
 	CollectionID uuid.UUID       `json:"collection_id"`
 	Collection   Collection      `json:"collection"`
 	Metadata     json.RawMessage `json:"metadata" swaggertype:"object"`
