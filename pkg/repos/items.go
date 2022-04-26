@@ -65,7 +65,7 @@ func (r *RepoPG) QueryItems(ctx context.Context, req *models.QueryItemReq) (*mod
 	if req.LikedBy != "" {
 		tx = tx.Where("(SELECT count(*) as count FROM item_like il WHERE i.id = il.item_id AND il.user_id = ?) > 0", req.LikedBy)
 	}
-	if err := tx.Count(&total).Limit(pageSize).Offset(r.GetOffset(page, pageSize)).Find(&items).Error; err != nil {
+	if err := tx.Preload("Collection").Preload("Creator").Count(&total).Limit(pageSize).Offset(r.GetOffset(page, pageSize)).Find(&items).Error; err != nil {
 		log.Println(err)
 		return nil, err
 	}

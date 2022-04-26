@@ -9,6 +9,8 @@ type Item struct {
 	BaseModel
 	ItemID       string          `json:"item_id" gorm:"index"`
 	Owner        string          `json:"owner"`
+	CreatorID    uuid.UUID       `json:"creator_id"`
+	Creator      User            `json:"creator" gorm:"foreignKey:creator_id;references:id"`
 	CollectionID uuid.UUID       `json:"collection_id"`
 	Collection   Collection      `json:"collection"`
 	Metadata     json.RawMessage `json:"metadata" swaggertype:"object"`
