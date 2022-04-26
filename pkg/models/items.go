@@ -8,7 +8,8 @@ import (
 type Item struct {
 	BaseModel
 	ItemID       string          `json:"item_id" gorm:"index"`
-	Owner        string          `json:"owner"`
+	OwnerID      uuid.UUID       `json:"owner_id"`
+	Owner        User            `json:"owner"`
 	CreatorID    uuid.UUID       `json:"creator_id"`
 	Creator      User            `json:"creator" gorm:"foreignKey:creator_id;references:id"`
 	CollectionID uuid.UUID       `json:"collection_id"`
@@ -25,7 +26,7 @@ func (i *Item) TableName() string {
 
 type ItemReq struct {
 	ItemID       string          `json:"item_id" gorm:"index"`
-	Owner        string          `json:"owner"`
+	OwnerID      uuid.UUID       `json:"owner_id"`
 	CollectionID uuid.UUID       `json:"collection_id"`
 	Metadata     json.RawMessage `json:"metadata" swaggertype:"object"`
 	Category     string          `json:"category"`

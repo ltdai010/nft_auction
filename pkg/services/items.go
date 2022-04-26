@@ -30,7 +30,7 @@ func (c *Items) Create(ctx context.Context, item *models.ItemReq, creator *uuid.
 			CreatorID: *creator,
 		},
 		ItemID:       item.ItemID,
-		Owner:        item.Owner,
+		OwnerID:      item.OwnerID,
 		CollectionID: item.CollectionID,
 		Metadata:     item.Metadata,
 		Category:     item.Category,
