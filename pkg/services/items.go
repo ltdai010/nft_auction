@@ -26,9 +26,8 @@ type ItemsInterface interface {
 
 func (c *Items) Create(ctx context.Context, item *models.ItemReq, creator *uuid.UUID) (*models.Item, error) {
 	return c.repo.CreateItem(ctx, &models.Item{
-		BaseModel: models.BaseModel{
-			CreatorID: *creator,
-		},
+		BaseModel:    models.BaseModel{},
+		CreatorID:    *creator,
 		ItemID:       item.ItemID,
 		OwnerID:      item.OwnerID,
 		CollectionID: item.CollectionID,
