@@ -12,5 +12,5 @@ func InitUserRoutes(rg *gin.RouterGroup, repo repos.PGInterface) {
 	handler := handlers.NewUserHandler(service)
 	rg.POST("/login", handler.Login)
 	rg.GET("/profile/:id", handler.GetProfile)
-	rg.POST("/users/refresh-token", handler.RefreshToken)
+	rg.POST("/refresh-token", handler.RefreshToken)
 }
