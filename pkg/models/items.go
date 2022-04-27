@@ -25,7 +25,7 @@ func (i *Item) TableName() string {
 }
 
 type ItemReq struct {
-	ItemID       string          `json:"item_id" gorm:"index"`
+	ItemID       string          `json:"item_id"`
 	OwnerID      uuid.UUID       `json:"owner_id"`
 	CollectionID uuid.UUID       `json:"collection_id"`
 	Metadata     json.RawMessage `json:"metadata" swaggertype:"object"`
