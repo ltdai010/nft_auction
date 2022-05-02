@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm/clause"
 	"log"
 	"nft_auction/pkg/models"
+	"strings"
 )
 
 func (r *RepoPG) CreateItem(ctx context.Context, req *models.Item) (*models.Item, error) {
@@ -23,7 +24,7 @@ func (r *RepoPG) GetItem(ctx context.Context, id *uuid.UUID) (*models.Item, erro
 	tx, cancel := r.DBWithTimeout(ctx)
 	defer cancel()
 	res := models.Item{}
-	if err := tx.Model(&models.Item{}).Where("id = ?", id).First(&res).Error; err != nil {
+	if err := tx.Model(&models.Item{}).Preload("Sales").Preload("Collection").Preload("Creator").Preload("Owner").Where("id = ?", id).First(&res).Error; err != nil {
 		return nil, err
 	}
 	return &res, nil
@@ -65,7 +66,10 @@ func (r *RepoPG) QueryItems(ctx context.Context, req *models.QueryItemReq) (*mod
 	if req.LikedBy != "" {
 		tx = tx.Where("(SELECT count(*) as count FROM item_like il WHERE i.id = il.item_id AND il.user_id = ?) > 0", req.LikedBy)
 	}
-	if err := tx.Preload("Collection").Preload("Creator").Preload("Owner").Count(&total).Limit(pageSize).Offset(r.GetOffset(page, pageSize)).Find(&items).Error; err != nil {
+	if req.Status != "" {
+		tx = tx.Where("status IN (?)", strings.Split(req.Status, ","))
+	}
+	if err := tx.Preload("Sales").Preload("Collection").Preload("Creator").Preload("Owner").Count(&total).Limit(pageSize).Offset(r.GetOffset(page, pageSize)).Find(&items).Error; err != nil {
 		log.Println(err)
 		return nil, err
 	}

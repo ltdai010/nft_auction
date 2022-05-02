@@ -18,11 +18,21 @@ type Item struct {
 	Category     string          `json:"category"`
 	Name         string          `json:"name"`
 	Description  string          `json:"description"`
+	Status       Status          `json:"status"`
+	Sales        []Sale          `json:"sales"`
 }
 
 func (i *Item) TableName() string {
 	return "items"
 }
+
+type Status string
+
+const (
+	Unset   Status = "unset"
+	OnSale  Status = "on_sale"
+	Auction Status = "auction"
+)
 
 type ItemReq struct {
 	ItemID       string          `json:"item_id"`
@@ -52,6 +62,7 @@ type QueryItemReq struct {
 	OwnerID      string `json:"owner_id" form:"owner_id"`
 	LikedBy      string `json:"liked_by" form:"liked_by"`
 	CreatorID    string `json:"creator_id" form:"creator_id"`
+	Status       string `json:"status" form:"status"`
 	Pagination
 }
 

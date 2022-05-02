@@ -2,7 +2,9 @@ version: "3"
 services:
 
   server:
-    image: dailt/auction:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - .:/app
     network_mode: "host"

@@ -15,7 +15,6 @@
         },
         "version": "1.0"
     },
-    "host": "api.uchain.duckdns.org",
     "basePath": "/v1",
     "paths": {
         "/collections": {
@@ -273,7 +272,7 @@
                     "Items"
                 ],
                 "summary": "Like Item",
-                "operationId": "put-item",
+                "operationId": "like-item",
                 "parameters": [
                     {
                         "description": "data",
@@ -332,6 +331,15 @@
                         "type": "string",
                         "description": "owner_id",
                         "name": "owner_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "status",
+                        "name": "status",
                         "in": "query"
                     },
                     {
@@ -533,6 +541,46 @@
                 }
             }
         },
+        "/sales/actions/buy": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Buy Sales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Buy Sales",
+                "operationId": "buy-sales",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BuyReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Sale"
+                        }
+                    }
+                }
+            }
+        },
         "/sales/query/list": {
             "get": {
                 "description": "Query Sale",
@@ -703,6 +751,14 @@
         }
     },
     "definitions": {
+        "models.BuyReq": {
+            "type": "object",
+            "properties": {
+                "sale_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Collection": {
             "type": "object",
             "properties": {
@@ -798,6 +854,15 @@
                     "$ref": "#/definitions/models.User"
                 },
                 "owner_id": {
+                    "type": "string"
+                },
+                "sales": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Sale"
+                    }
+                },
+                "status": {
                     "type": "string"
                 },
                 "updated_at": {

@@ -25,6 +25,10 @@ type SaleReq struct {
 	Decimal        int       `json:"decimal"`
 }
 
+type BuyReq struct {
+	SaleID uuid.UUID `json:"sale_id"`
+}
+
 type QuerySaleReq struct {
 	ItemID uuid.UUID `json:"item_id" form:"item_id"`
 }

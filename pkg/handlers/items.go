@@ -49,6 +49,7 @@ func (c *ItemHandler) Get(ctx *gin.Context) {
 // @Param collection_id query string false "collection_id"
 // @Param liked_by query string false "liked by"
 // @Param owner_id query string false "owner_id"
+// @Param status query []string false "status"
 // @Param page query int false "page"
 // @Param page_size query int false "page_size"
 // @Success 200 {object} models.QueryItemRes
@@ -98,7 +99,7 @@ func (c *ItemHandler) Post(ctx *gin.Context) {
 // @Summary Like Item
 // @Description Like Item
 // @Security ApiKeyAuth
-// @ID put-item
+// @ID like-item
 // @Accept  json
 // @Produce  json
 // @Param data body models.Item true "data"

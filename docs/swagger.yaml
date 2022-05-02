@@ -1,5 +1,10 @@
 basePath: /v1
 definitions:
+  models.BuyReq:
+    properties:
+      sale_id:
+        type: string
+    type: object
   models.Collection:
     properties:
       address:
@@ -63,6 +68,12 @@ definitions:
       owner:
         $ref: '#/definitions/models.User'
       owner_id:
+        type: string
+      sales:
+        items:
+          $ref: '#/definitions/models.Sale'
+        type: array
+      status:
         type: string
       updated_at:
         type: string
@@ -195,7 +206,6 @@ definitions:
       refresh_token:
         type: string
     type: object
-host: api.uchain.duckdns.org
 info:
   contact:
     email: support@swagger.io
@@ -435,7 +445,7 @@ paths:
       consumes:
       - application/json
       description: Like Item
-      operationId: put-item
+      operationId: like-item
       parameters:
       - description: data
         in: body
@@ -478,6 +488,12 @@ paths:
         in: query
         name: owner_id
         type: string
+      - description: status
+        in: query
+        items:
+          type: string
+        name: status
+        type: array
       - description: page
         in: query
         name: page
@@ -559,6 +575,31 @@ paths:
           schema:
             $ref: '#/definitions/models.Sale'
       summary: Get Sale
+      tags:
+      - Sales
+  /sales/actions/buy:
+    put:
+      consumes:
+      - application/json
+      description: Buy Sales
+      operationId: buy-sales
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.BuyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Sale'
+      security:
+      - ApiKeyAuth: []
+      summary: Buy Sales
       tags:
       - Sales
   /sales/query/list:

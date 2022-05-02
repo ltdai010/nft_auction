@@ -280,7 +280,7 @@ const docTemplate = `{
                     "Items"
                 ],
                 "summary": "Like Item",
-                "operationId": "put-item",
+                "operationId": "like-item",
                 "parameters": [
                     {
                         "description": "data",
@@ -339,6 +339,15 @@ const docTemplate = `{
                         "type": "string",
                         "description": "owner_id",
                         "name": "owner_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "status",
+                        "name": "status",
                         "in": "query"
                     },
                     {
@@ -540,6 +549,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/sales/actions/buy": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Buy Sales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Buy Sales",
+                "operationId": "buy-sales",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BuyReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Sale"
+                        }
+                    }
+                }
+            }
+        },
         "/sales/query/list": {
             "get": {
                 "description": "Query Sale",
@@ -710,6 +759,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.BuyReq": {
+            "type": "object",
+            "properties": {
+                "sale_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Collection": {
             "type": "object",
             "properties": {
@@ -805,6 +862,15 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.User"
                 },
                 "owner_id": {
+                    "type": "string"
+                },
+                "sales": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Sale"
+                    }
+                },
+                "status": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -1021,7 +1087,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "api.uchain.duckdns.org",
+	Host:             "",
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Finan Loyalty API",

@@ -13,4 +13,5 @@ func InitSalesRoutes(rg *gin.RouterGroup, repo repos.PGInterface) {
 	rg.POST("", handler.Post)
 	rg.GET("/:id", handler.Get)
 	rg.GET("/query/list", handler.Query)
+	rg.PUT("/actions/buy", handler.Buy)
 }

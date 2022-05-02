@@ -87,3 +87,29 @@ func (c *SaleHandler) Post(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, user)
 }
+
+// Buy
+// @Tags Sales
+// @Summary Buy Sales
+// @Description Buy Sales
+// @Security ApiKeyAuth
+// @ID buy-sales
+// @Accept  json
+// @Produce  json
+// @Param data body models.BuyReq true "data"
+// @Success 200 {object} models.Sale
+// @Router /sales/actions/buy [put]
+func (c *SaleHandler) Buy(ctx *gin.Context) {
+	var req models.BuyReq
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	userId := uuid.MustParse(ctx.GetHeader("x-user-id"))
+	user, err := c.service.Buy(ctx, &req.SaleID, &userId)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, consts.ErrNotFound)
+		return
+	}
+	ctx.JSON(http.StatusOK, user)
+}

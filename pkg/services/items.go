@@ -35,6 +35,7 @@ func (c *Items) Create(ctx context.Context, item *models.ItemReq, creator *uuid.
 		Category:     item.Category,
 		Name:         item.Name,
 		Description:  item.Description,
+		Status:       models.Unset,
 	})
 }
 
